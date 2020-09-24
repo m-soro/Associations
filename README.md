@@ -131,15 +131,15 @@
 * If there's only one referenced object in the array then you will see the entire object, but once 2 or more objects are referenced then you will see only their object id's.
 
 *Let's say we'll need to find the user and we want to display that user's post*
-    ```
-    User.findOne({email:'msoro@mohg.com'}).populate('posts').exec(function(err, user){
-      if(err){
-        console.log(err);
-      } else {
-        console.log(user);
-      }
-    });
-    ```
+```
+User.findOne({email:'msoro@mohg.com'}).populate('posts').exec(function(err, user){
+  if(err){
+    console.log(err);
+  } else {
+    console.log(user);
+  }
+});
+```
 
 - `.populate` generates the posts.
 - `.exec` executes the code.
