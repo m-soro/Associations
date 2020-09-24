@@ -59,4 +59,16 @@
   * User
   * Post
 
+#### ...Another way of associating data using **object references**
+   - Rather than, storing the actual posts in the posts array `posts:[postSchema]`, we will be storing object ids that references to the posts.
 ## Referencing Data
+  - Will need to make a change in this line `posts:[postSchema]` to make this an array that we'll pass object ids in:
+  ```
+  posts:[
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Post'
+    }
+  ]
+  ```
+  - the above is the sytax writing it, its a mongoose object Id, referencing to a  post.
