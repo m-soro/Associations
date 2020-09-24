@@ -149,3 +149,150 @@ So first we stored the data as embedded in embed.js then we referenced it on ref
 The short answer is it depends!
 
 You can pretty much get away with both of them but, it really depends on what you are trying to do.
+
+## Module.export
+
+  - to shorten and clean up the code. It will be like a require statement just like mongoose.
+  - it makes the code for modular, for example we have another app that will have the same user model, we can just require it to that app.
+
+
+  **Before module.export**
+
+  ```
+  var mongoose = require('mongoose');
+  mongoose.connect('mongodb://localhost/blog_demo_2', {
+    useNewUrlParser: true, useUnifiedTopology: true
+  });
+  // Define a Schema and a model
+
+  // POST = title, content
+  var Schema = mongoose.Schema;
+  var postSchema = new Schema({
+    title:String,
+    content:String
+  });
+  var Post = mongoose.model('Post', postSchema);
+
+  // USER = email, name, and posts
+  var Schema = mongoose.Schema;
+  var userSchema = new Schema({
+    email:String,
+    name:String,
+    posts:[
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Post'
+      }
+    ]
+  });
+  var User = mongoose.model('User', userSchema);
+
+  User.create({
+    email: 'msoro@mohg.com',
+    name: 'Mark Soro'
+  });
+
+  Post.create({
+    title: 'Tips on how to cook the best pasta Part3!',
+    content: 'Part 3 Underdone is better and water should be salted!'
+  }, function(err, post){
+    if(err) {
+      console.log(err);
+    } else {
+      User.findOne({email:'msoro@mohg.com'}, function(err, foundUser){
+        if(err) {
+          console.log(err);
+        } else {
+          foundUser.posts.push(post);
+          foundUser.save(function(err, data){
+            if(err) {
+              console.log(err);
+            } else {
+              console.log(data);
+            }
+          });
+        }
+      });
+    }
+  });
+
+  // Find user
+  // Find all post for that user
+  User.findOne({email:'msoro@mohg.com'}).populate('posts').exec(function(err, user){
+    if(err){
+      console.log(err);
+    } else {
+      console.log(user);
+    }
+  });
+  ```
+**Let's use module.export!**
+* Step 1 - mkdir `models` create `post.js`
+* Step 2 - `var mongoose = require('mongoose');` require mongoose
+* Step 3 - `module.exports = mongoose.model('Post', postSchema);` declare the model and save it to `module.exports`
+* Step 4 - require it in references.js and repeat the same with users.js
+```
+// Require mongoose first
+var mongoose = require('mongoose');
+
+// POST = title, content
+var Schema = mongoose.Schema;
+var postSchema = new Schema({
+  title:String,
+  content:String
+});
+
+// return the file as an export
+module.exports = mongoose.model('Post', postSchema);
+```
+
+**After module.exports**
+```
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/blog_demo_2', {
+  useNewUrlParser: true, useUnifiedTopology: true
+});
+
+// using module.export
+var Post = require('./models/post.js');
+var User = require('./models/users.js');
+
+User.create({
+  email: 'msoro@mohg.com',
+  name: 'Mark Soro'
+});
+
+Post.create({
+  title: 'Tips on how to cook the best pasta Part4!',
+  content: 'Part 4 Underdone is better and water should be salted!'
+}, function(err, post){
+  if(err) {
+    console.log(err);
+  } else {
+    User.findOne({email:'msoro@mohg.com'}, function(err, foundUser){
+      if(err) {
+        console.log(err);
+      } else {
+        foundUser.posts.push(post);
+        foundUser.save(function(err, data){
+          if(err) {
+            console.log(err);
+          } else {
+            console.log(data);
+          }
+        });
+      }
+    });
+  }
+});
+
+// Find user
+// Find all post for that user
+User.findOne({email:'msoro@mohg.com'}).populate('posts').exec(function(err, user){
+  if(err){
+    console.log(err);
+  } else {
+    console.log(user);
+  }
+});
+```

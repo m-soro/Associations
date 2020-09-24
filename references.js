@@ -2,29 +2,10 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/blog_demo_2', {
   useNewUrlParser: true, useUnifiedTopology: true
 });
-// Define a Schema and a model
 
-// POST = title, content
-var Schema = mongoose.Schema;
-var postSchema = new Schema({
-  title:String,
-  content:String
-});
-var Post = mongoose.model('Post', postSchema);
-
-// USER = email, name, and posts
-var Schema = mongoose.Schema;
-var userSchema = new Schema({
-  email:String,
-  name:String,
-  posts:[
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Post'
-    }
-  ]
-});
-var User = mongoose.model('User', userSchema);
+// using module.export
+var Post = require('./models/post.js');
+var User = require('./models/users.js');
 
 User.create({
   email: 'msoro@mohg.com',
@@ -32,8 +13,8 @@ User.create({
 });
 
 Post.create({
-  title: 'Tips on how to cook the best pasta Part3!',
-  content: 'Part 3 Underdone is better and water should be salted!'
+  title: 'Tips on how to cook the best pasta Part4!',
+  content: 'Part 4 Underdone is better and water should be salted!'
 }, function(err, post){
   if(err) {
     console.log(err);
