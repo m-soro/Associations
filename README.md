@@ -144,8 +144,8 @@ User.findOne({email:'msoro@mohg.com'}).populate('posts').exec(function(err, user
 - `.populate` generates the posts.
 - `.exec` executes the code.
 
-* So first we stored the data as embedded in embed.js then we referenced it on reference.js but, when do we use what method?
+So first we stored the data as embedded in embed.js then we referenced it on reference.js but, when do we use what method?
 
 The short answer is it depends!
 
-* You can pretty much get away with both of them but, it really depends on what you are trying to do.
+You can pretty much get away with both of them but, it really depends on what you are trying to do.
