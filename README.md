@@ -101,7 +101,7 @@
   * Step 2 - find the user then in the callback function push the post that was just created to the foundUser posts[] array.
   * Step 3 - then we need to save the foundUser, then when thats done print out the data.
 
-  ```
+    ```
     Post.create({
       title: 'Tips on how to cook the best pasta Part2!',
       content: 'Underdone is better and water should be salted!'
@@ -126,6 +126,7 @@
       }
     });
     ```
+
 *Tip*
 * If there's only one referenced object in the array then you will see the entire object, but once 2 or more objects are referenced then you will see only their object id's.
 
@@ -139,7 +140,7 @@
       }
     });
     ```
-    
+
 - `.populate` generates the posts.
 - `.exec` executes the code.
 
