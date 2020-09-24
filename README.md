@@ -8,8 +8,9 @@
     - An example of one to many is a user with multiple posts like below!
 
 ## Embedding Data
-    * User
-    * Post
+  * User
+  * Post
+
     ```
     var Schema = mongoose.Schema;
     var userSchema = new Schema({
@@ -38,7 +39,9 @@
       }
     });
     ```
-    - Let's add another post from user Jeff Knight
+
+  - Let's add another post from user Jeff Knight
+
     ```
     User.findOne({name:'Jeff Knight'}, function(err, user){
       if(err){
@@ -59,10 +62,9 @@
     });
     ```
 
-
-
 #### ...Another way of associating data using **object references**
-   - Rather than, storing the actual posts in the posts array `posts:[postSchema]`, we will be storing object ids that references to the posts.
+  - Rather than, storing the actual posts in the posts array `posts:[postSchema]`, we will be storing object ids that references to the posts.
+
 ## Referencing Data
   - Will need to make a change in this line `posts:[postSchema]` to make this an array that we'll pass object ids in:
   ```
@@ -95,11 +97,11 @@
   ```
   *But, how do we connect them together using the mongoose Id?*
 
-    * Step 1 - create a post
-    * Step 2 - find the user then in the callback function push the post that was just created to the foundUser posts[] array.
-    * Step 3 - then we need to save the foundUser, then when thats done print out the data.
+  * Step 1 - create a post
+  * Step 2 - find the user then in the callback function push the post that was just created to the foundUser posts[] array.
+  * Step 3 - then we need to save the foundUser, then when thats done print out the data.
 
-    ```
+  ```
     Post.create({
       title: 'Tips on how to cook the best pasta Part2!',
       content: 'Underdone is better and water should be salted!'
@@ -124,10 +126,10 @@
       }
     });
     ```
-    *Tip*
-    * If there's only one referenced object in the array then you will see the entire object, but once 2 or more objects are referenced then you will see only their object id's.
+*Tip*
+* If there's only one referenced object in the array then you will see the entire object, but once 2 or more objects are referenced then you will see only their object id's.
 
-    *Let's say we'll need to find the user and we want to display that user's post*
+*Let's say we'll need to find the user and we want to display that user's post*
     ```
     User.findOne({email:'msoro@mohg.com'}).populate('posts').exec(function(err, user){
       if(err){
@@ -137,8 +139,9 @@
       }
     });
     ```
-    - `.populate` generates the posts.
-    - `.exec` executes the code.
+    
+- `.populate` generates the posts.
+- `.exec` executes the code.
 
 *So first we stored the data as embedded in embed.js then we referenced it on reference.js but, when do we use what method? The short answer is it depends!
-*You can pretty much get away with both of them but, it really depends on what you are trying to do. 
+*You can pretty much get away with both of them but, it really depends on what you are trying to do.
